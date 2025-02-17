@@ -36,7 +36,6 @@ const EditStudents = () => {
     const saveStudent = async(e)=>{
         e.preventDefault();
         await axios.put(`http://localhost:8075/students/update/${id}`, student);
-        
         navigate('/view-students');
            
     };

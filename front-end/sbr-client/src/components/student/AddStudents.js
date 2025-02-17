@@ -16,8 +16,9 @@ import React, { useState } from 'react'
     const{firstName,lastName,email,department} = student;
 
     const handleInputChange = (e)=>{
-        
-    }
+        setStudent({...student,[e.target.name] : e.target.value});
+      }
+  
 
     const updateStudent = async(e)=>{
         e.preventDefault();

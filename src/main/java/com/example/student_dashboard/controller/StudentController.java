@@ -2,7 +2,6 @@ package com.example.student_dashboard.controller;
 
 import com.example.student_dashboard.model.Student;
 import com.example.student_dashboard.service.StudentService;
-import com.example.student_dashboard.service.StudentServiceIMPL;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/students")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:3000")
 public class StudentController {
 
     @Autowired

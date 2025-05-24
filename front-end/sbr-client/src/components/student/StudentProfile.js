@@ -1,137 +1,145 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import ProfileImage from '../student/profile.jpg'
-
+import ProfileImage from '../student/profile.jpg';
+import NavBar from '../common/NavBar';
 
 const StudentProfile = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-    const navigate = useNavigate();
+  const [student, setStudent] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    department: ''
+  });
 
-    const{id} = useParams();
-    
-    const[student, setStudent] = useState({
-            firstName:'',
-            lastName:'',
-            email:'',
-            department:''
-        });
+  useEffect(() => {
+    loadStudent();
+  }, []);
 
-        useEffect(()=>{
-                loadStudents();
-            },[]);
+  const loadStudent = async () => {
+    const result = await axios.get(`http://localhost:8075/students/student/${id}`);
+    setStudent(result.data);
+  };
 
-        const loadStudents = async()=>{
-            const result = await axios.get(
-                `http://localhost:8075/students/student/${id}`);
-                setStudent(result.data);
-               
-        }
-    
-    
   return (
-    <section style={{TbBackgroundColor:"whitesmoke"}}>
-        <div className='contaioner py-5'>
-            <div className = "row">
-                <div className='col-lg-3'>
-                    <div className='card mb-4'>
-                        <div className='card-body text-center'>
-                           <img
-                            src = {ProfileImage}
-                            alt = "avatar"
-                            className='rounded-circle img-fluid'
-                            style={{width:150 , height:150, objectFit:'cover'}}/>
-                            <h5 className='my-3'>
-                                {`${student.firstName} ${student.lastName}`}
-                            </h5>
-                            <div className='d-flex justify-content-center mb-2'>
-                                <button
-                                    type ="button"
-                                    className='btn btn-outline-primary'>
-                                    Call
-                                </button>
-                                <button
-                                    type ="button"
-                                    className='btn btn-outline-primary'>
-                                    Message
-                                </button>
-                            </div>
-                        </div>    
-                    </div>    
-                </div> 
-                <div className='col-lg-9'>
-                    <div className='card mb-4'>
-                        <div className='card-body'>
-                            <hr/>
+    <div style={{ 
+      backgroundColor: '#f8f9fa', 
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      <NavBar />
+      
+      <div className="container-fluid flex-grow-1 py-4">
+        <div className="row justify-content-between">
+          {/* Left Side - Profile Card */}
+          <div className="col-lg-5 col-md-6 mb-4">
+            <div className="card shadow-sm h-100">
+              <div className="card-body text-center p-4 d-flex flex-column">
+                <img
+                  src={ProfileImage}
+                  alt="avatar"
+                  className="rounded-circle img-fluid mx-auto mb-3"
+                  style={{ 
+                    width: '150px', 
+                    height: '150px', 
+                    objectFit: 'cover',
+                    border: '3px solid #0d6efd'
+                  }}
+                />
+                <h3 className="mb-3">
+                  {student.firstName} {student.lastName}
+                </h3>
+                <div className="d-flex justify-content-center gap-3 mb-3">
+                  <button 
+                    type="button" 
+                    className="btn btn-outline-primary px-4"
+                    style={{ borderRadius: '20px' }}
+                  >
+                    <i className="bi bi-telephone me-2"></i>Call
+                  </button>
+                  <button 
+                    type="button" 
+                    className="btn btn-outline-primary px-4"
+                    style={{ borderRadius: '20px' }}
+                  >
+                    <i className="bi bi-chat-left-text me-2"></i>Message
+                  </button>
+                </div>
+                <div className="mt-auto">
+                  <button
+                    className="btn btn-outline-warning w-100 py-2"
+                    onClick={() => navigate('/view-students')}
+                    style={{ fontSize: '1.1rem' }}
+                  >
+                    <i className="bi bi-arrow-left me-2"></i>Back to Students List
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-                            <div className='row'>
-                                <div className='col-sm-3'>
-                                    <h5 className='mb-0'>
-                                        First Name
-                                    </h5>
-                                </div>
-                                <div className='col-sm-9'>
-                                    <p className='text-muted mb-0'>
-                                        {student.firstName}
-                                    </p>
-                                    
-                                </div>
-                                <hr/>
-                                
-                            </div>
-
-                            <div className='row'>
-                                <div className='col-sm-3'>
-                                    <h5 className='mb-0'>
-                                        Last Name
-                                    </h5>
-                                </div>
-                                <div className='col-sm-9'>
-                                    <p className='text-muted mb-0'>
-                                        {student.lastName}
-                                    </p>
-                                </div>
-                                <hr/>
-                            </div>
-
-                            <div className='row'>
-                                <div className='col-sm-3'>
-                                    <h5 className='mb-0'>
-                                        Email
-                                    </h5>
-                                </div>
-                                <div className='col-sm-9'>
-                                    <p className='text-muted mb-0'>
-                                        {student.email}
-                                    </p>
-                                </div>
-                                <hr/>
-                            </div>
-
-                            <div className='row'>
-                                <div className='col-sm-3'>
-                                    <h5 className='mb-0'>
-                                        Department
-                                    </h5>
-                                </div>
-                                <div className='col-sm-9'>
-                                    <p className='text-muted mb-0'>
-                                        {student.department}
-                                    </p>
-                                </div>
-                                <hr/>
-                            </div>
-                        </div>
-                    </div>
+          {/* Right Side - Details Card */}
+          <div className="col-lg-6 col-md-6 mb-4">
+            <div className="card shadow-sm h-100">
+              <div className="card-body p-4">
+                <h4 className="mb-4 border-bottom pb-2">Student Details</h4>
+                
+                <div className="row mb-3">
+                  <div className="col-md-4">
+                    <h6 className="text-muted">First Name</h6>
+                  </div>
+                  <div className="col-md-8">
+                    <p className="fs-5">{student.firstName}</p>
+                  </div>
                 </div>
 
-                <button className='btn btn-outline-warning' onClick={() => navigate('/view-students')}>
-                    Back to Students List
-                </button>
-        </div>
-        </div>
-    </section>
-  )
-}
+                <div className="row mb-3">
+                  <div className="col-md-4">
+                    <h6 className="text-muted">Last Name</h6>
+                  </div>
+                  <div className="col-md-8">
+                    <p className="fs-5">{student.lastName}</p>
+                  </div>
+                </div>
 
-export default StudentProfile
+                <div className="row mb-3">
+                  <div className="col-md-4">
+                    <h6 className="text-muted">Email</h6>
+                  </div>
+                  <div className="col-md-8">
+                    <p className="fs-5 text-break">{student.email}</p>
+                  </div>
+                </div>
+
+                <div className="row mb-3">
+                  <div className="col-md-4">
+                    <h6 className="text-muted">Department</h6>
+                  </div>
+                  <div className="col-md-8">
+                    <p className="fs-5">{student.department}</p>
+                  </div>
+                </div>
+
+                {/* Additional space for more fields if needed */}
+                <div className="row mb-3">
+                  <div className="col-md-4">
+                    <h6 className="text-muted">Student ID</h6>
+                  </div>
+                  <div className="col-md-8">
+                    <p className="fs-5">{id}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default StudentProfile;

@@ -1,113 +1,122 @@
- import axios from 'axios';
-import React, { useState } from 'react'
- import {Link, useNavigate} from "react-router-dom";
- 
- const AddStudents = () => {
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import NavBar from '../common/NavBar';
 
-    let navigate = useNavigate();
+const AddStudents = () => {
+  const navigate = useNavigate();
 
-    const[student, setStudent] = useState({
-        firstName:'',
-        lastName:'',
-        email:'',
-        department:''
-    })
+  const [student, setStudent] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    department: ''
+  });
 
-    const{firstName,lastName,email,department} = student;
+  const { firstName, lastName, email, department } = student;
 
-    const handleInputChange = (e)=>{
-        setStudent({...student,[e.target.name] : e.target.value});
-      }
-  
+  const handleInputChange = (e) => {
+    setStudent({ ...student, [e.target.name]: e.target.value });
+  };
 
-    const updateStudent = async(e)=>{
-        e.preventDefault();
-        await axios.post('http://localhost:8075/students', student);
-        
-        navigate('/view-students');
+  const updateStudent = async (e) => {
+    e.preventDefault();
+    await axios.post('http://localhost:8075/students', student);
+    navigate('/view-students');
+  };
 
-           
-    };
+  const styles = {
+    pageWrapper: {
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: '#f8f9fa',
+    },
+    contentWrapper: {
+      flex: 1,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'start',
+      padding: '40px 20px',
+    },
+    formContainer: {
+      backgroundColor: '#fff',
+      padding: '30px',
+      borderRadius: '12px',
+      boxShadow: '0 0 15px rgba(0,0,0,0.1)',
+      width: '100%',
+      maxWidth: '700px',
+    }
+  };
 
-   return (
-     <div className='col-sm-8 py-2 px-5'> 
-     <h2 className='mt-5'>Add Student</h2> 
-       <form onSubmit={(e)=>updateStudent(e)}> 
-       <div className='input-group mb-5'>
-                <label className='input-group-text' htmlFor='firstName'>
-                First Name
-                </label>
-                <input className='form-control col-sm-6'
-                type='text'
-                name='firstName'
-                id='firstName'
+  return (
+    <div style={styles.pageWrapper}>
+      <NavBar />
+      <div style={styles.contentWrapper}>
+        <div style={styles.formContainer}>
+          <h2 className="mb-4">Add Student</h2>
+          <form onSubmit={updateStudent}>
+            <div className="mb-3">
+              <label htmlFor="firstName" className="form-label">First Name</label>
+              <input
+                className="form-control"
+                type="text"
+                name="firstName"
+                id="firstName"
                 required
                 value={firstName}
-                onChange={(e)=>handleInputChange(e)}/>
+                onChange={handleInputChange}
+              />
             </div>
 
-            <div className='input-group mb-5'>
-                <label className='input-group-text' htmlFor='lastName'>
-                Last Name
-                </label>
-                <input className='form-control col-sm-6'
-                type='text'
-                name='lastName'
-                id='lastName'
+            <div className="mb-3">
+              <label htmlFor="lastName" className="form-label">Last Name</label>
+              <input
+                className="form-control"
+                type="text"
+                name="lastName"
+                id="lastName"
                 required
                 value={lastName}
-                onChange={(e)=>handleInputChange(e)}/>
+                onChange={handleInputChange}
+              />
             </div>
 
-            <div className='input-group mb-5'>
-                <label className='input-group-text' htmlFor='email'>
-                Email
-                </label>
-                <input className='form-control col-sm-6'
-                type='email'
-                name='email'
-                id='email'
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">Email</label>
+              <input
+                className="form-control"
+                type="email"
+                name="email"
+                id="email"
                 required
                 value={email}
-                onChange={(e)=>handleInputChange(e)}/>
-
+                onChange={handleInputChange}
+              />
             </div>
 
-            <div className='input-group mb-5'>
-                <label className='input-group-text' htmlFor='department'>
-                Department
-                </label>
-                <input className='form-control col-sm-6'
-                type='text'
-                name='department'
-                id='department'
+            <div className="mb-4">
+              <label htmlFor="department" className="form-label">Department</label>
+              <input
+                className="form-control"
+                type="text"
+                name="department"
+                id="department"
                 required
                 value={department}
-                onChange={(e)=>handleInputChange(e)}/>
+                onChange={handleInputChange}
+              />
             </div>
 
-            <div className='row mb-5'>
-                <div className='col-sm-2'>
-                    <button
-                        className='btn btn-outline-success btn-lg'
-                        type='submit'>
-                        Save
-                    </button>
-                </div>
-
-                <div className='col-sm-2'>
-                    <Link 
-                        to={'/view-students'}
-                        className='btn btn-outline-warning btn-lg'
-                        type='submit'>
-                        Cancel
-                    </Link>
-                </div>
+            <div className="d-flex gap-3">
+              <button className="btn btn-outline-success" type="submit">Save</button>
+              <Link to="/view-students" className="btn btn-outline-warning">Cancel</Link>
             </div>
-            
-       </form>
-     </div>
-   )
- }
- 
- export default AddStudents
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AddStudents;
